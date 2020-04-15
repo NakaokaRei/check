@@ -16,7 +16,6 @@
 		B15BE51121C570300067F359 /* ViewControllerWomen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15BE51021C570300067F359 /* ViewControllerWomen.swift */; };
 		B15BE51421C571630067F359 /* fashion_good_men.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B15BE51321C571630067F359 /* fashion_good_men.mlmodel */; };
 		B15BE51621C5716A0067F359 /* fashion_good_women.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B15BE51521C5716A0067F359 /* fashion_good_women.mlmodel */; };
-		B1EE4ED521E4D35500268A2D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B1EE4ED421E4D35500268A2D /* GoogleService-Info.plist */; };
 		B1EE4ED721E5044500268A2D /* ViewControllerSelect.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EE4ED621E5044500268A2D /* ViewControllerSelect.swift */; };
 /* End PBXBuildFile section */
 
@@ -34,7 +33,6 @@
 		B15BE51021C570300067F359 /* ViewControllerWomen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerWomen.swift; sourceTree = "<group>"; };
 		B15BE51321C571630067F359 /* fashion_good_men.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = fashion_good_men.mlmodel; sourceTree = "<group>"; };
 		B15BE51521C5716A0067F359 /* fashion_good_women.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = fashion_good_women.mlmodel; sourceTree = "<group>"; };
-		B1EE4ED421E4D35500268A2D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B1EE4ED621E5044500268A2D /* ViewControllerSelect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerSelect.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -86,7 +84,6 @@
 				B15BE50121C56ABA0067F359 /* Assets.xcassets */,
 				B15BE50321C56ABA0067F359 /* LaunchScreen.storyboard */,
 				B15BE50621C56ABA0067F359 /* Info.plist */,
-				B1EE4ED421E4D35500268A2D /* GoogleService-Info.plist */,
 				B15BE50E21C56E8D0067F359 /* ViewControllerMen.swift */,
 				B1EE4ED621E5044500268A2D /* ViewControllerSelect.swift */,
 				B15BE51021C570300067F359 /* ViewControllerWomen.swift */,
@@ -165,7 +162,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B15BE50521C56ABA0067F359 /* LaunchScreen.storyboard in Resources */,
-				B1EE4ED521E4D35500268A2D /* GoogleService-Info.plist in Resources */,
 				B15BE50221C56ABA0067F359 /* Assets.xcassets in Resources */,
 				B15BE50021C56AB90067F359 /* Main.storyboard in Resources */,
 			);
