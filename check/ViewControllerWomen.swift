@@ -10,17 +10,83 @@ import UIKit
 import CoreML
 import Vision
 import ImageIO
+import GoogleMobileAds
+import Accounts
 
-class ViewControllerWomen: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ViewControllerWomen: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, GADBannerViewDelegate {
 
 
+    @IBOutlet weak var goodLabel: UILabel!
     @IBOutlet weak var cameraView: UIImageView!
+    //@IBOutlet weak var cameraView: UIImageView!
     @IBOutlet weak var resultLabel: UILabel!
     var inputImage: CIImage!
+    var bannerView: GADBannerView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        bannerView = GADBannerView(adSize: kGADAdSizeBanner)
+        addBannerViewToView(bannerView)
+        bannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716" //テスト広告
+        bannerView.rootViewController = self
+        bannerView.load(GADRequest())
+        bannerView.delegate = self
+    }
+    
+    func addBannerViewToView(_ bannerView: GADBannerView) {
+        bannerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bannerView)
+        view.addConstraints(
+            [NSLayoutConstraint(item: bannerView,
+                                attribute: .bottom,
+                                relatedBy: .equal,
+                                toItem: view.safeAreaLayoutGuide,
+                                attribute: .bottom,
+                                multiplier: 1,
+                                constant: 0),
+             NSLayoutConstraint(item: bannerView,
+                                attribute: .centerX,
+                                relatedBy: .equal,
+                                toItem: view,
+                                attribute: .centerX,
+                                multiplier: 1,
+                                constant: 0)
+            ])
+    }
+    
+    /// Tells the delegate an ad request loaded an ad.
+    func adViewDidReceiveAd(_ bannerView: GADBannerView) {
+        print("adViewDidReceiveAd")
+    }
+    
+    /// Tells the delegate an ad request failed.
+    func adView(_ bannerView: GADBannerView,
+                didFailToReceiveAdWithError error: GADRequestError) {
+        print("adView:didFailToReceiveAdWithError: \(error.localizedDescription)")
+    }
+    
+    /// Tells the delegate that a full-screen view will be presented in response
+    /// to the user clicking on an ad.
+    func adViewWillPresentScreen(_ bannerView: GADBannerView) {
+        print("adViewWillPresentScreen")
+    }
+    
+    /// Tells the delegate that the full-screen view will be dismissed.
+    func adViewWillDismissScreen(_ bannerView: GADBannerView) {
+        print("adViewWillDismissScreen")
+    }
+    
+    /// Tells the delegate that the full-screen view has been dismissed.
+    func adViewDidDismissScreen(_ bannerView: GADBannerView) {
+        print("adViewDidDismissScreen")
+    }
+    
+    /// Tells the delegate that a user click will open another app (such as
+    /// the App Store), backgrounding the current app.
+    func adViewWillLeaveApplication(_ bannerView: GADBannerView) {
+        print("adViewWillLeaveApplication")
     }
     
     override func didReceiveMemoryWarning() {
@@ -28,7 +94,9 @@ class ViewControllerWomen: UIViewController, UIImagePickerControllerDelegate, UI
     }
     
     func imagePickerController(_ imagePicker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        self.resultLabel.text = "Analyzing Image…"
+        self.resultLabel.text = "Analyzing"
+        self.goodLabel.text = "Image..."
+        
         if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             self.cameraView.contentMode = .scaleAspectFit
             self.cameraView.image = pickedImage
@@ -67,7 +135,8 @@ class ViewControllerWomen: UIViewController, UIImagePickerControllerDelegate, UI
         
         DispatchQueue.main.async {
             self.resultLabel.numberOfLines = 2;
-            self.resultLabel.text = "あなたの服装は\(Int(Double(truncating: values[0])))いいね!"
+            self.resultLabel.text = "\(Int(Double(truncating: values[0])))"
+            self.goodLabel.text = "LIKE"
         }
     }
     
@@ -101,6 +170,41 @@ class ViewControllerWomen: UIViewController, UIImagePickerControllerDelegate, UI
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }
+    @IBAction func share(_ sender: Any) {
+        // 共有する項目
+        let shareText = "あなたの服装は\(resultLabel.text!)いいね！！ #CHECK #服装採点アプリ\n https://itunes.apple.com/jp/app/check-%E6%9C%8D%E8%A3%85%E6%8E%A1%E7%82%B9%E3%82%A2%E3%83%97%E3%83%AA/id1448979928?l=ja&ls=1&mt=8"
+        //let shareWebsite = NSURL(string: "https://itunes.apple.com/jp/app/check-%E6%9C%8D%E8%A3%85%E6%8E%A1%E7%82%B9%E3%82%A2%E3%83%97%E3%83%AA/id1448979928?l=ja&ls=1&mt=8")!
+        //let shareImage = UIImage(named: "shareSample.png")!
+        
+        UIGraphicsBeginImageContextWithOptions(UIScreen.main.bounds.size, false, 0.0)
+        //viewを書き出す
+        self.view.drawHierarchy(in: self.view.bounds, afterScreenUpdates: true)
+        // imageにコンテキストの内容を書き出す
+        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        //コンテキストを閉じる
+        UIGraphicsEndImageContext()
+        
+        // 初期化処理
+        let activityItems = [shareText, image] as [Any]
+        let activityVC = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+        
+        // 使用しないアクティビティタイプ
+        let excludedActivityTypes = [
+            UIActivity.ActivityType.postToFacebook,
+            //UIActivity.ActivityType.postToTwitter,
+            UIActivity.ActivityType.message,
+            //UIActivity.ActivityType.saveToCameraRoll,
+            UIActivity.ActivityType.print
+        ]
+        
+        activityVC.excludedActivityTypes = excludedActivityTypes
+        
+        // UIActivityViewControllerを表示
+        self.present(activityVC, animated: true, completion: nil)
+        
+    }
+    
+    
     /*
     // MARK: - Navigation
 
@@ -112,3 +216,4 @@ class ViewControllerWomen: UIViewController, UIImagePickerControllerDelegate, UI
     */
 
 }
+
